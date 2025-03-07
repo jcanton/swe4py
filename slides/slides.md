@@ -47,8 +47,6 @@ hide: false
 <!-- Content here is ignored -->
 
 ---
-
----
 src: ./slides/1.3-environments-installers-building/section-slides.md
 hide: false
 ---
