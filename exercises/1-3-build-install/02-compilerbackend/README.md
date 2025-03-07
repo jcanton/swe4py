@@ -1,4 +1,4 @@
-# Example for a special purpose backend
+# Interactions between Frontend and Backend
 
 There are some special purpose backends, mainly to support distributing python extensions written in compiled languages.
 
@@ -12,16 +12,16 @@ The example content is only slightly adapted from the following tutorials:
 - [Building extensions using Meson (nanobind)](https://nanobind.readthedocs.io/en/latest/meson.html)
 - [Creating your first extension (nanobind)](https://nanobind.readthedocs.io/en/latest/basics.html)
 
-### See it in action
+### See the Backend in action
 
 #### install in editable mode:
 
 ```bash
-$ python -m venv .venv
-$ source .venv/bin/activate
-(venv)$ pip install meson ninja
-(venv)$ pip install -e .
-(venv)$ python -c "import cppext; print(cppext.add(2, 2))"
+$ uv venv venv-comp
+$ source venv-comp/bin/activate
+(venv-comp)$ uv pip install meson ninja
+(venv-comp)$ uv pip install -e .
+(venv-comp)$ python -c "import cppext; print(cppext.add(2, 2))"
 4
 ```
 
@@ -30,46 +30,48 @@ Change the extension in `src/cpp_extension.cpp`, for example: make the "add" fun
 Test the changes, automatically recompiles.
 
 ```bash
-(venv)$ python -c "import cppext; print(cppext.add(2, 2))"
+(venv-comp)$ python -c "import cppext; print(cppext.add(2, 2))"
 5
 ```
 
-#### build for distribution:
+### Does this work with every frontend?
+
+#### Let's build with a few of them:
 
 Make sure the build system picks up a C++17 capable compiler
 ```bash
-(venv)$ export CXX=<path-to-c++17-capable GCC>
+(venv-comp)$ export CXX=<path-to-c++17-capable GCC>
 ```
 
 With pip or the "build" frontends:
 
 ```bash
-(venv)$ pip wheel --wheel-dir dist .
+(venv-comp)$ pip wheel --wheel-dir dist .
 # you should see compiler output here
-(venv)$ ls dist
+(venv-comp)$ ls dist
 # you should see a .whl file here, specifig to your arch, os and python version
-(venv)$ pip install dist/compilerbackend-0.1.0-<pyversion-os-arch>.whl
+(venv-comp)$ pip install dist/compilerbackend-0.1.0-<pyversion-os-arch>.whl
 ```
 
 Replace the first line with the following to use "build":
 
 ```bash
-(venv)$ pip install build
-(venv)$ python -m build
+(venv-comp)$ pip install build
+(venv-comp)$ python -m build
 ```
 
 With `uv` or `hatch`:
 
 ```bash
-(venv)$ rm -r dist
-(venv)$ pip install uv # if you don't have it installed
-(venv)$ uv build
-(venv)$ pip install hatch # unless you already have hatch installed
-(venv)$ hatch build 
+(venv-comp)$ rm -r dist
+(venv-comp)$ pip install uv # if you don't have it installed
+(venv-comp)$ uv build
+(venv-comp)$ pip install hatch # unless you already have hatch installed
+(venv-comp)$ hatch build 
 # compiler output
-(venv)$ ls dist
+(venv-comp)$ ls dist
 # .whl file
-(venv)$ pip install dist/compilerbackend-0.1.0-<pyversion-os-arch>.whl
+(venv-comp)$ pip install dist/compilerbackend-0.1.0-<pyversion-os-arch>.whl
 ```
 Note that the install might fail, because if `hatch` / `uv` are installed standalone, they might decide to use a different python version. This is because we don't tell them what to use in the "pyproject.toml" file. In this case `pip` will complain that there was no version found for your system.
 
@@ -80,9 +82,9 @@ Also note that, (at least on MacOS) while `hatch` picks up exported "CC"/"CXX" e
 The easiest way is with `uv`
 
 ```bash
-(venv)$ uv build --wheel -p pypy-3.9
+(venv-comp)$ uv build --wheel -p pypy-3.9
 # installs PyPy-3.9 for you and runs build inside an ad-hoc environment
-(venv)$ ls dist
+(venv-comp)$ ls dist
 # this should have built a wheel for version 3.9 of the PyPy interpreter
 ```
 
