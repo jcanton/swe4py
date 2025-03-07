@@ -205,10 +205,93 @@ $ which python
 
 ## Anatomy of a Virtualenv
 
+```mermaid
+graph TD
+
+.venv/ --> bin/
+.venv/ --> lib/
+
+bin/ --> activate
+bin/ --> python["python -> /path/to/some/bin/python"]
+bin/ --> apps["installed apps"]
+
+lib/ --> sp["pythonX.Y/site-packages/"]
+sp --> pkgs["installed packages"]
+sp --> pth[".pth files"]
+```
+
 ---
 
 ## Anatomy of a Package Install
 
+```bash
+(venv)$ pip install <mylib>
+```
+
+1. Determine source
+
+- PyPi: `mylib`
+  - try relative path if not found
+- relative path: `./mylib`
+- url: `https:\//.../mylib.tar.gz`
+- vcs: `mylib@git+https:\//github.com/DropD/mylib`
+
+---
+
+## Anatomy of a Package Install
+
+```bash
+(venv)$ pip install <mylib>
+```
+
+2. Pick version, resolve dependencies, install
+
+```mermaid
+graph LR
+
+url -->|download| deps
+deps["resolve & install dependencies"] --> build["build wheel if needed"] 
+path --> deps
+pypi --> resolve["resolve version"]
+resolve -->|download| deps
+build -->|yes| install["install into active site-packages"]
+vcs -->|clone in cache| deps
+```
+
+<v-click>
+<a href="https://peps.python.org/pep-0650/">Installer (PEP 650)</a>
+<Arrow x1="120" y1="400" x2="400" y2="300" />
+</v-click>
+
+<v-click>
+ ➟ <a href="https://peps.python.org/pep-0518/"> Build Frontend (PEP 518)</a>
+<Arrow x1="420" y1="400" x2="600" y2="300" />
+</v-click>
+
+<v-click>
+ ➟ <a href="https://peps.python.org/pep-0517/"> Build Backend (PEP 517)</a>
+<Arrow x1="620" y1="400" x2="650" y2="300" />
+</v-click>
+
+<v-click>
+ ➟ <a href="https://peps.python.org/pep-0650/">Installer (PEP 650)</a>
+<Arrow x1="820" y1="400" x2="840" y2="300" />
+</v-click>
+
+---
+layout: fact
 ---
 
 ## Exercises
+
+Time to see it in action:
+
+Browse to
+
+<a href="https://github.com/eth-cscs/swe4py">https://github.com/eth-cscs/swe4py</a>
+
+Open a code space and head to `exercises/build-install`
+
+or
+
+Clone the repo & cd to `exercises/build-install`

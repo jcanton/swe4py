@@ -17,13 +17,13 @@ Here it is used only for illustrative purposes, hence it will not be explained f
 create a virtualenv and install into it
 
 ```bash
-$ python -m venv .venv
-$ source .venv/bin/activate
-(venv)$ pip install .
-(venv)$ hello # test the installation
-(venv)$ ls
+$ python -m venv venv-peek
+$ source venv-peek/bin/activate
+(venv-peek)$ pip install .
+(venv-peek)$ hello # test the installation
+(venv-peek)$ ls
 # this should have written a "wheel-log.txt" file
-(venv)$ cat wheel-log.txt
+(venv-peek)$ cat wheel-log.txt
 ```
 
 Now, take a look at `src/mybuild.py`. It implements all of the mandatory hooks specified in PEP-517!
@@ -31,9 +31,9 @@ Now, take a look at `src/mybuild.py`. It implements all of the mandatory hooks s
 Actually for what you just did, only `build_wheel` was used. The other one, `build_sdist`, is used for building source distributions (building a wheel was already implicitly done for you during install).
 
 ```bash
-(venv)$ pip install build # pip doesn't have an interface for building sdists, only wheels
-(venv)$ python -m build --sdist .
-(venv)$ cat sdist-log.txt
+(venv-peek)$ pip install build # pip doesn't have an interface for building sdists, only wheels
+(venv-peek)$ python -m build --sdist .
+(venv-peek)$ cat sdist-log.txt
 ```
 
 Of course the actual implementation would look a lot more complicated if we didn't just defer to an existing backend. The log files show you everything that is passed to the hooks, now ask yourself:
@@ -46,7 +46,7 @@ If you wonder why there is no standard way of specifying included python modules
 How about editable installs?
 
 ```bash
-(venv)$ pip install -e .
+(venv-peek)$ pip install -e .
 ```
 
 That's right, it fails! Editable installs require the optional `build_editable` hook, which we did not wrap in `mybuild.py`. That said, all the popular backends implement this.
