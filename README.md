@@ -12,3 +12,7 @@ You can serve them locally with an OCI container engine like [podman](https://po
 ```
 cd slides && ./serve.sh
 ```
+
+## Exercises
+
+See [exercises](./exercises/) folder.
