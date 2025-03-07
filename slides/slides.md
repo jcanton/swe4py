@@ -1,4 +1,6 @@
 ---
+addons:
+ - slidev-addon-python-runner
 theme: seriph
 background: images/title-bg3.png
 # some information about your slides (markdown enabled)
@@ -17,6 +19,12 @@ drawings:
 transition: slide-left
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
+# python runner config
+python:
+  installs: []
+fonts:
+  sans: Arial
+  seriph: Arial
 ---
 
 # Software Engineering Practices with Python
@@ -33,6 +41,13 @@ hide: false
 
 ---
 src: ./slides/1.2-python-common-ground/section-slides.md
+hide: false
+---
+
+<!-- Content here is ignored -->
+
+---
+src: ./slides/1.3-environments-installers-building/section-slides.md
 hide: false
 ---
 
