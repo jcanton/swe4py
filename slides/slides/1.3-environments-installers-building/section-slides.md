@@ -203,4 +203,12 @@ $ which python
 
 ---
 
-##
+## Anatomy of a Virtualenv
+
+---
+
+## Anatomy of a Package Install
+
+---
+
+## Exercises
