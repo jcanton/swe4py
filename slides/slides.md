@@ -55,6 +55,13 @@ hide: false
 <!-- Content here is ignored -->
 
 ---
+src: ./slides/1.4-collaboration/section-slides.md
+hide: false
+---
+
+<!-- Content here is ignored -->
+
+---
 
 <!-- This allow you to embed external code blocks -->
 <<< @/snippets/python.py#snippet

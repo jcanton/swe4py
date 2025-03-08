@@ -8,7 +8,9 @@ wheels/
 
 # Virtual environments
 .venv
+venv-peek
 
 # generated files
 sdist-log.txt
 wheel-log.txt
+uv.lock

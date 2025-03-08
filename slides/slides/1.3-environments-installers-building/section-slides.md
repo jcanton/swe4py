@@ -6,7 +6,7 @@ layout: section
 
 ---
 
-## What we will Learn
+## What We Will Learn
 
 - Virtualenv Gotchas
 - Why are environments not movable?
@@ -101,7 +101,7 @@ They are both Python Package Managers
 
 ## Gotchas
 
-### 2. Where is my Package?
+### 2. Where Is My Package?
 
 ---
 
@@ -174,7 +174,7 @@ project_a $ uv run python -c "import rich, numpy; rich.print(numpy.array([1, 2, 
 ---
 
 ## Gotchas
-### 3. Venvs don't stack
+### 3. Venvs Don't Stack
 
 ---
 
@@ -203,7 +203,22 @@ $ which python
 
 ---
 
-## Anatomy of a Virtualenv
+## Anatomy Of A Virtualenv
+
+```mermaid
+graph TD
+
+.venv/ --> bin/
+.venv/ --> lib/
+
+bin/ --> activate
+bin/ --> python["python -> /path/to/some/bin/python"]
+bin/ --> apps["installed apps"]
+
+lib/ --> sp["pythonX.Y/site-packages/"]
+sp --> pkgs["installed packages"]
+sp --> pth[".pth files"]
+```
 
 ```mermaid
 graph TD
@@ -222,7 +237,7 @@ sp --> pth[".pth files"]
 
 ---
 
-## Anatomy of a Package Install
+## Anatomy Of A Package Install
 
 ```bash
 (venv)$ pip install <mylib>
@@ -238,7 +253,7 @@ sp --> pth[".pth files"]
 
 ---
 
-## Anatomy of a Package Install
+## Anatomy Of A Package Install
 
 ```bash
 (venv)$ pip install <mylib>
@@ -284,14 +299,17 @@ layout: fact
 
 ## Exercises
 
-Time to see it in action:
+Time to see it in action: Browse to
 
-Browse to
-
+<br />
 <a href="https://github.com/eth-cscs/swe4py">https://github.com/eth-cscs/swe4py</a>
 
+<br />
+<br />
+
 Open a code space and head to `exercises/build-install`
+(need to be logged in)
 
 or
 
-Clone the repo & cd to `exercises/build-install`
+Clone the repo & cd to `exercises/1-3-build-install`

@@ -1,0 +1,11 @@
+[project]
+name = "mytool"
+dependencies = []
+version = "0.1.0"
+
+[project.scripts]
+mytool = "mytool.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
