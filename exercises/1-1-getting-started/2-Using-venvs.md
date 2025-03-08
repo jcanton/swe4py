@@ -74,8 +74,8 @@ $ python -m pip install --upgrade pip setuptools wheel
 ------------------------------------------------------------
 **EXERCISES:**
 
-1. Use `venv` to create a virtual environment called `.venv-1.26`, install NumPy version 1.26 on it with `pip`, and run a python command which.
+1. Use `venv` to create a virtual environment in the `.venv-1.26` folder, install NumPy version 1.26 on it with `pip`, and run a python command with an inlined script argument to import `numpy` and print its version.
 
-2. Use `uv` to create a virtual environment called `.venv-2.2`, and install NumPy version 2.2 on it with `uv pip`.
+2. Use `uv` to create a virtual environment in the `.venv-2.2` folder, install NumPy version 2.2 on it with `uv pip`, and run a python command with an inlined script argument to import `numpy` and print its version.
 
 ------------------------------------------------------------

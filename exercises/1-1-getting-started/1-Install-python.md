@@ -5,7 +5,7 @@ It is useful to learn different strategies to install the Python interpreter in 
 1. Use your system native package system (e.g. `apt`, `pacman`, ...)
 2. Use an alternative package manager available in your system (e.g. `brew`, `conda`, `spack`, ,...)
 3. Use a development tool managing different programing tools versions (e.g. `asdf`, ...)
-4. Use a Python version manager (e.g. `uv`, `pyenv`) to kickstart a Python installation without ex
+4. Use a Python version manager (e.g. `uv`, `pyenv`) to kickstart a Python installation without an existing Python interpreter.
 
 You will need to decide which strategy works better for your use-case. Here we will only explain option 4, since options 1-3 are not specific to Python.
 
