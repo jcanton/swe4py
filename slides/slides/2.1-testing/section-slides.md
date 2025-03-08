@@ -1,5 +1,5 @@
 ---
-layout: section
+layout: fact
 title: Testing
 ---
 
@@ -34,9 +34,15 @@ layout: full
 ## **Practices**
 
         7. Common Pitfalls
-        8. Good Practices
+        8. Good Habits
 
 </v-click>
+
+---
+layout: section
+---
+
+# Testing Principles
 
 ---
 
@@ -130,7 +136,7 @@ Unlike **Static Analysis** and **Formal Verification** approaches...
 
         - Business wants to stop spending, regardless of testing
 
-        - Testing should stop when business stops, not earlier
+        - The value of testing ∝ The value of the project
 
 </v-click>
 
@@ -169,6 +175,12 @@ Pragmatically
 </Transform>
 
 ---
+layout: section
+---
+
+# Testing Concepts
+
+---
 
 # Testing **Workflow**
 
@@ -191,7 +203,7 @@ The process driving the testing framework could be ...
 
 - `python custom_testing_logic.py`
 
-        - A plain python process, old, not cool anymore
+        - A tailored custom python process, legacy, not cool anymore
 
 </v-click>
 <v-click>
@@ -231,7 +243,8 @@ The process driving the testing framework could be ...
 
 (Testing Workflow)
 
-For each new test for a new feature or bugfix, you should experience this
+For each new test for a new feature (or bugfix)...
+
 
 ```mermaid
 stateDiagram
@@ -247,20 +260,39 @@ stateDiagram
     pass_new_again --> fail_new_again:::testFail : comment implementation
     fail_new_again --> pass_tests_again:::testPass : uncomment implementation
     pass_tests_again --> [*] : git push
-
 ```
 
-Note:
+<v-click>
 
-`pass_tests`
+        - ensure you start (and finish) your work from a passing state
 
-        - at least for the project "modules" you'll work on
+</v-click>
+<v-click>
 
-`git push`
+        - see your new test fail!
 
-        - your CI/CD pipeline would run the rest of the test suite
+</v-click>
+<v-click>
 
-<!-- should state diagram invert state / transition elements? -->
+        - specially if you refactored!
+
+</v-click>
+
+<v-click>
+
+        - your CI/CD pipeline should run the rest of your test suite
+
+</v-click>
+
+
+<!--
+
+save the planet! run locally first, leverage git hooks
+
+should state diagram invert state / transition elements?
+
+
+-->
 
 ---
 
@@ -290,7 +322,7 @@ layout: two-cols-header
 
 Example
 
-<Transform :scale="0.7">
+<Transform :scale="0.8">
 ```python
 # factorial.py
 def factorial(n):
@@ -316,54 +348,198 @@ def factorial(n):
 
 ::right::
 
+<v-click>
+
 Exercise
 
-- Add some doctests to `exercise_doctest.py`
-- Run the doctests and see the results
+1. Open `exercises/testing/doctest.py`
+2. Add some doctest tests to it
+3. Run those tests and see the results in stdout
+
+</v-click>
 
 ---
 layout: fact
 ---
 
-... did you see the test <a class="text-red-600 text-2xl">FAIL</a> ?
+... did you see your test <a class="text-red-600 text-2xl">FAIL</a> ?
+
+---
+layout: center
+---
+
+# Anatomy of a Test
+
+The 3A (if you like acronyms)
+
+- Arrange
+- Act
+- Assert
+
+FWIW aka GWT from BDD
 
 ---
 
-# Testing Frameworks: unittest
+# unittest
 
-## Example
+(Testing Frameworks)
 
-See the 3A in action: Arrange, Act, Assert
+<Transform :scale="0.9">
+
+*Example from CPython @ https://github.com/python/cpython/blob/3.9/Lib/test/test_float.py#L566*
 
 ```
-?
+class FormatFunctionsTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.save_formats = {'double':float.__getformat__('double'),
+                             'float':float.__getformat__('float')}
+
+    def tearDown(self):
+        float.__setformat__('double', self.save_formats['double'])
+        float.__setformat__('float', self.save_formats['float'])
+
+    def test_getformat(self):
+        self.assertIn(float.__getformat__('double'),
+                      ['unknown', 'IEEE, big-endian', 'IEEE, little-endian'])
+        self.assertIn(float.__getformat__('float'),
+                      ['unknown', 'IEEE, big-endian', 'IEEE, little-endian'])
+        self.assertRaises(ValueError, float.__getformat__, 'chicken')
+        self.assertRaises(TypeError, float.__getformat__, 1)
 ```
+
+Can you see the 3As?
+
+</Transform>
+
+<!--
+./python -m test test_float -v | grep test_setformat
+-->
 
 ---
 
-# Testing Frameworks: pytest
+# How Testing Arrange feels like
 
-## Example
+<Transform :scale="0.8">
+
+![truman](https://images.thalia.media/-/BF750-750/818040d0fb03498aa478e0331567274e/die-truman-show-blu-ray-blu-ray-4k-jim-carrey.jpeg)
+
+</Transform>
+
+---
+
+# pytest
+
+(Testing Frameworks)
+
+<Transform :scale="0.9">
+
+*Example from Matplotlib @ https://github.com/matplotlib/matplotlib/blob/v3.10.1/lib/matplotlib/tests/test_axes.py#L385*
 
 ```
-TODO
+@pytest.mark.parametrize('twin', ('x', 'y'))
+def test_twin_units(twin):
+    axis_name = f'{twin}axis'
+    twin_func = f'twin{twin}'
+
+    a = ['0', '1']
+    b = ['a', 'b']
+
+    fig = Figure()
+    ax1 = fig.subplots()
+    ax1.plot(a, b)
+    assert getattr(ax1, axis_name).units is not None
+    ax2 = getattr(ax1, twin_func)()
+    assert getattr(ax2, axis_name).units is not None
+    assert getattr(ax2, axis_name).units is getattr(ax1, axis_name).units
 ```
 
-## Exercies
+Can you see the 3As?
+
+</Transform>
+
+---
+
+# pytest Exercise
+
+(Testing Frameworks)
+
+<Transform :scale="0.8">
+
+Getting Started
 
 ```
-- Configure pytest for a project with coverage and support for parallel execution
-- Write a simple test and see the report
+# 1. navigate to exercise
+cd exercises/testing
+
+# 2. create python environment
+python -m venv venv
+source venv/bin/activate
+
+# 3. install dependencies
+pip install pytest
+pip install pytest-benchmark
+pip install pytest-cov
+pip install pytest-xdist
+
+# 4. run all tests
+python -m pytest .
+
+# 5. run module tests
+python -m pytest test_core.py
+
+# 6. run targeted tests
+python -m pytest -k palindrome
 ```
+
+</Transform>
+
+<!--
+- Run test suite with coverage
+- Run test suite in randomized order
+
+-->
 
 ---
 
 # Testing Features
 
-1. assertions
-2. fixtures
-3. mocking
-4. fuzzing
+1. Assertions
+2. Fixtures
+3. Parametrization
+4. Mocking
+
+---
+
+# Assertions
+
+(Testing Features)
+
+<v-click>
+
+- Used to check expectations
+
+</v-click>
+<v-click>
+
+- At least one for each test
+
+</v-click>
+<v-click>
+
+- Not too many for each test
+
+</v-click>
+<v-click>
+
+- `self.assertSomething(*args, **kwargs)` in unittests
+
+</v-click>
+<v-click>
+
+- plain `assert` in pytest
+
+</v-click>
 
 ---
 layout: fact
@@ -376,37 +552,315 @@ layout: fact
 `assert` (in test)
 
 ---
+layout: fact
+---
 
-# Testing Features: fixtures
+`assert` (in code) is **NOT** for error handling
 
-Reusable blocks of testing code.
+uncaught `Error` (in test) is **NOT** a form of testing
 
-"Mixins" in unittest-based frameworks.
+---
 
-importorskip
+# Fixtures
 
-pytestmark
+(Testing Features)
+
+<v-click>
+
+Reusable blocks of testing code
+
+</v-click>
+<v-click>
+
+"Mixins" for class-based unittest examples
+
+</v-click>
+<v-click>
+
+"Fixtures" for pytest-based examples
+
+</v-click>
+
+---
+layout: two-cols-header
+---
+
+# Mixin
+
+Fixture with unittests
+
+::left::
+
+<Transform :scale="0.7">
+
+*Example from CPython @ https://github.com/python/cpython/blob/3.9/Lib/test/test_argparse.py#L48*
+
+```
+class TempDirMixin(object):
+
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self.old_dir = os.getcwd()
+        os.chdir(self.temp_dir)
+
+    def tearDown(self):
+        os.chdir(self.old_dir)
+        for root, dirs, files in os.walk(self.temp_dir, topdown=False):
+            for name in files:
+                os.chmod(os.path.join(self.temp_dir, name), stat.S_IWRITE)
+        shutil.rmtree(self.temp_dir, True)
+
+    def create_writable_file(self, filename):
+        file_path = os.path.join(self.temp_dir, filename)
+        with open(file_path, 'w') as file:
+            file.write(filename)
+        return file_path
+
+    def create_readonly_file(self, filename):
+        os.chmod(self.create_writable_file(filename), stat.S_IREAD)
+```
+
+</Transform>
+
+::right::
+
+<Transform :scale="0.65">
+
+*later, for usage ...*
+
+```
+class TestFileTypeRB(TempDirMixin, ParserTestCase):
+    """Test the FileType option/argument type for reading files"""
+
+    def setUp(self):
+        super(TestFileTypeRB, self).setUp()
+        for file_name in ['foo', 'bar']:
+            with open(os.path.join(self.temp_dir, file_name), 'w') as file:
+                file.write(file_name)
+    ...
+```
+</Transform>
+
+---
+
+# Fixture
+
+Fixture with pytest
+
+<Transform :scale="0.8">
+
+*Example from Flask @ https://github.com/pallets/flask/blob/3.1.0/tests/test_config.py#L243*
+
+```
+@pytest.mark.parametrize("encoding", ["utf-8", "iso-8859-15", "latin-1"])
+def test_from_pyfile_weird_encoding(tmp_path, encoding):
+    f = tmp_path / "my_config.py"
+    f.write_text(f'# -*- coding: {encoding} -*-\nTEST_VALUE = "föö"\n', encoding)
+    app = flask.Flask(__name__)
+    app.config.from_pyfile(os.fspath(f))
+    value = app.config["TEST_VALUE"]
+    assert value == "föö"
+```
+
+</Transform>
+
+---
+
+# pytest Exercise
+
+Assertions and Fixtures
+
+
+1. Write a test that asserts an uncovered path of `core.py`
+1. Add a fixture to your test to factor out your test data
+1. Add a docstring to your fixture and see the docs with pytest --fixtures
+
+---
+
+# Parametrization
+
+1 test * N input combinations = N tests
+
+<v-click>
+
+Your test becomes a function and its parametrized invocations become test instances.
+
+</v-click>
+<v-click>
+
+Removes duplication while promoting dynamic test-case generation.
+
+</v-click>
+<v-click>
+
+<Transform :scale="0.8">
+
+*Example from Numpy @ https://github.com/numpy/numpy/blob/v2.2.3/numpy/distutils/tests/test_log.py#L23*
+
+```
+@pytest.mark.parametrize("func_name", ["error", "warn", "info", "debug"])
+def test_log_prefix(func_name):
+    func = getattr(log, func_name)
+    msg = f"{func_name} message"
+    f = io.StringIO()
+    with redirect_stdout(f):
+        func(msg)
+    out = f.getvalue()
+    assert out  # sanity check
+    clean_out = r_ansi.sub("", out)
+    line = next(line for line in clean_out.splitlines())
+    assert line == f"{func_name.upper()}: {msg}"
+```
+
+</Transform>
+
+</v-click>
+
+---
+
+# Parametrization
+
+(Testing Features)
+
+<Transform :scale="0.5">
+
+![fuzzing](./assets/fuzzing.jpg)
+
+</Transform>
+
+<!--
+
+Introducing Fuzzing requires a workflow adjustment and a more complex setup.
+
+Randomized input testing proved to be quite efficient.
+
+These days used a lot in security context for vulnerability checking within penetration testing.
+
+-->
+
+---
+
+# Mocking
+
+(Testing Features)
+
+
+<v-click>
+
+The **Mock** is the object you replace a real one with to inspect in your test
+
+</v-click>
+<v-click>
+
+The **Stub** is the callable you repleace a real function with to prevent being called from your test
+
+</v-click>
+<v-click>
+
+**Patching** is the action of "implanting" the mock/stub
+
+</v-click>
+<v-click>
+
+`monkeypatch` is the pytest fixture for patching and mocking.
+
+</v-click>
+
+---
+
+# Mocking
+
+Pytest Example
+
+```
+def test_getssh(monkeypatch):
+    # mocked return function to replace Path.home
+    # always return '/abc'
+    def mockreturn():
+        return Path("/abc")
+
+    # Application of the monkeypatch to replace Path.home
+    # with the behavior of mockreturn defined above.
+    monkeypatch.setattr(Path, "home", mockreturn)
+
+    # Calling getssh() will use mockreturn in place of Path.home
+    # for this test with the monkeypatch.
+    x = getssh()
+    assert x == Path("/abc/.ssh")
+```
+
+More examples in https://docs.pytest.org/en/stable/how-to/monkeypatch.html
+
+---
+
+# pytest Exercise
+
+Parametrization and Mocking
+
+1. use `pytest.mark.parametrize` in a `core.py` test to test more combinations of input
+1. Mark this test with a custom `mark` named `futurefuzz`
+1. Run the test with `pytest --strict-markers`
+1. Write a test in `test_app.py` that mocks `os.getenv` and makes the function using `os.getenv` fail
+
+---
+layout: section
+---
+
+# Testing Practices
 
 ---
 
 # Common Pitfalls
 
-1. tests < CODE
+<v-click>
 
-2. Coupling tests
+1. tests < CODE ?
 
-3. Not seing the test fail
+        (tests hold so much value!)
+
+</v-click>
+<v-click>
+
+2. integrat**ING** tests
+
+        (don't couple or share state among tests)
+
+</v-click>
+<v-click>
+
+3. failed to see the test fail
+
+        (green is cool but have you seen red?)
+
+</v-click>
 
 ---
 
-# Good Practices
+# Good Habits
 
-1. Adjust code for testability
+
+<v-click>
+
+1. Adjust your code for testability
+
         (e.g. dependency injection, flags)
 
-2. Optimize your testing workflow (i.e. easy to run for contributors, fast feedback loops (unit-tests as default), re-run failed, pre-push hooks, etc.) <!-- your project's test suite utilities are gold -->
+</v-click>
+<v-click>
 
-3. Keep tests focused, decoupled (in nature and order) and organized
+2. Keep your tests focused, decoupled and organized
+
+        (e.g. order and functional independence)
+
+</v-click>
+<v-click>
+
+3. Tailor your testing workflow
+
+        (e.g. easy to run for first contributors, fast feedback loops,
+        unit-tests as default, pre-push hooks, etc.)
+
+</v-click>
 
 ---
 layout: end
@@ -415,6 +869,8 @@ layout: end
 # End of Testing section
 
 More about Testing...
+
+**Pandas'** guide: https://pandas.pydata.org/docs/dev/development/contributing_codebase.html#
 
 **Martin Fowler's** posts: https://martinfowler.com/tags/testing.html
 
