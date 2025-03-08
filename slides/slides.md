@@ -41,7 +41,7 @@ hide: false
 <!-- Content here is ignored -->
 
 ---
-src: ./slides/1.2-python-common-ground/section-slides.md
+src: ./slides/1.2-understanding-python/section-slides.md
 hide: false
 ---
 

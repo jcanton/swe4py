@@ -2,13 +2,13 @@
 layout: section
 ---
 
-# Getting started with Python: Basic environment configuration
+# Getting Started with Python: Basic environment configuration
 
 ---
 
-## Content
+## Agenda
 
-- Understanding a Python interpreter
+- Understanding Python interpreters
 - Understanding virtual environments
 
 ---
@@ -134,12 +134,8 @@ layout: fact
 
 ## Exercises
 
-Time to see it in action: Browse to
+Browse to: [https://github.com/eth-cscs/swe4py](https://github.com/eth-cscs/swe4py)
 
-<br />
-<a href="https://github.com/eth-cscs/swe4py">https://github.com/eth-cscs/swe4py</a>
-
-<br />
 <br />
 
 Open a code space and head to `exercises/1-1-getting-started`
