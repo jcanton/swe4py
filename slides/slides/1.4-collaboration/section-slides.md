@@ -113,6 +113,45 @@ layout: fact
 
 ## Packaging
 
+Why make their life easy?
+
+---
+layout: two-cols
+---
+
+### Libraries without Packaging
+
+<v-click>
+Only ways to use:
+</v-click>
+<v-click>
+
+- copy the code (and the dependencies)
+</v-click>
+<v-click>
+
+- submodules
+</v-click>
+<v-click>
+
+Who wouldn't want that?
+</v-click>
+
+::right::
+### Packaged Libraries not on PyPi
+<v-click>
+
+Doable, however:
+</v-click>
+<v-click>
+
+- Supply chain security concerns anyone?
+</v-click>
+<v-click>
+
+- Not as pretty
+</v-click>
+
 ---
 
 ### Easy to try out CLI App
