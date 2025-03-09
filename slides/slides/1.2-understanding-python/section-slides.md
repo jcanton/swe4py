@@ -40,7 +40,7 @@ No, really, what is an _object_ in Python?
 
 It is an abstraction for _"data"_ with:
 - an unique, immutable identity (`id()`, `a is b` ~= `(id(a) == id(b)`)
-  - (in CPython, this is its memory address)
+  - (in CPython, this is the memory address)
 - a type (`type()` ~= `a.__class__`)
 - a value, usually just a _"namespace"_ or mapping from names to other _objects_
 - (in CPython, it also has a reference count `>= 1`)
@@ -228,11 +228,18 @@ UnboundLocalError: local variable 'xxxx' referenced before assignment
 
 What happens when modifying names from different scopes?
 
-- _local_ variables can be always modified
+- _Local_ variables can be always modified
 
-- _enclosed_ / _non-local_ variables need to be introduced with the `nonlocal` keyword to be _rebindable_
+- If a variable is assigned to in a function, it is **automatically** considered _local_ in that function
 
-- _global_ / _module_ variables need to be declared as `global` keyword to be _rebindable_
+  - _Enclosed_ (_non-local_) variables need to be introduced with the `nonlocal` keyword to be _rebindable_
+
+  - _Global_ (_module_) variables need to be declared as `global` keyword to be _rebindable_
+
+<v-click>
+
+- **Very important:** `global_var = 3 ` != `global_var.attr = 3`
+</v-click>
 
 ---
 layout: fact
@@ -335,7 +342,7 @@ A _class_ may have a _metaclass_ that defines how the class is created.
 
 <v-click>
 
-_"Wait, does this mean that an attribute access actually requires a hash map lookup??!"_
+_"Wait, does this mean that an attribute access actually requires a hash map lookup??!"_  😂😂
 </v-click>
 
 ---
@@ -363,11 +370,57 @@ print(obj._MyClass__private)    # Obfuscation by name-mangling but still accessi
   - Don't rely on privacy for security
   - _"We're all consenting adults here"_
 
+
+---
+
+# Dynamic Object Attributes: `@property`
+
+<div class="grid grid-cols-[50%_50%] gap-5">
+
+- Properties work as _attributes_ computed on-the-fly. `@property` is a builtin _decorator_
+    ```python
+    class Circle:
+        def __init__(self, radius):
+            self.radius = radius
+
+        @property
+        def area(self):
+            return 3.14 * self.radius ** 2
+
+    c = Circle(5)
+    print(c.area)  # 78.5
+    ```
+
+<div>
+
+- `@property.setter` and `@property.deleter` can be used to define _setter_ and _deleter_ methods
+```python
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+
+    @property
+    def area(self):
+        return 3.14 * self.radius ** 2
+
+    @area.setter
+    def area(self, value):
+        self.radius = (value / 3.14) ** 0.5
+```
+</div>
+</div>
+
+<v-click>
+
+- It works by means of the [Descriptor Protocol](https://docs.python.org/3/howto/descriptor.html) (`__get__()`, `__set__()`, `__delete__`) which allows running user-defined _hooks_ in attribute accesses
+- ``@property`` is a _descriptor_ that defines custom _getter_ / _setter_ hooks for a specific attribute ([pseudocode](https://docs.python.org/3/howto/descriptor.html#properties))
+</v-click>
+
 ---
 
 # Attribute Access == Function Call
 
-In Python, attribute accesses are **really** calls to _magic methods_
+Actually, all attribute accesses in Python are **calls** to _magic methods_
 
 <v-click>
 
@@ -379,6 +432,7 @@ In Python, attribute accesses are **really** calls to _magic methods_
 
 - `obj.attr = value` is equivalent to `type(obj).__setattr__(obj, 'attr', value)`
   - Note that this is **completely different** than `name = value`
+  - How? Why?
 
 </div>
 </v-click>
@@ -402,17 +456,16 @@ In Python, attribute accesses are **really** calls to _magic methods_
 </div>
 </v-click>
 
-
 ---
 
-# Attribute Lookup In Detail
+# Attribute Access: Putting Everything Together
 
-- Default `object.__getattribute__(instance, attr)`: ([flow chart](slides/1.2-understanding-python/assets/object-attribute-lookup-v3.png), [Descriptor Protocol](https://docs.python.org/3/howto/descriptor.html))
+- Default `object.__getattribute__(instance, attr)`: <[flow chart](slides/1.2-understanding-python/assets/object-attribute-lookup-v3.png)>
   ```python
-  def __getattribute__(self, attr):
+  def __getattribute__(self: object, attr: str) -> Any:
       cls = type(self)
-      value = NameNotFoundSpecialMarker             # special marker value
-      if attr in cls.__dict__:
+      value = NameNotFoundSpecialMarker             # special marker value for this pseudocode example
+      if attr in cls.__dict__:                      # see `type.__getattribute__()` below
           value = cls.__dict__[attr]
           if is_data_descriptor(value):             # value found in class is a data descriptor
               return value.__get__(self, cls)
@@ -422,7 +475,7 @@ In Python, attribute accesses are **really** calls to _magic methods_
           if is_non_data_descriptor(value):         # value found in class is a non-data descriptor
               return value.__get__(self, cls)
           else:
-              return value
+              return value                          # value found in class is a normal object
       return cls.__getattr__(self, attr)
   ```
 <v-click>
@@ -437,9 +490,9 @@ In Python, attribute accesses are **really** calls to _magic methods_
 
 - Object attributes are just names in the object's namespace
 - There is no true privacy in Python
-- Attribute access is a complex process that can be fully customized
-  - Per class via _magic methods_
-  - Per attribute via _descriptors_
+- Attribute access is a complex process and can be fully customized
+  - At class level via custom _magic methods_
+  - At attribute level via _descriptors_ (e.g. `@property`, `@cachedproperty`, ...)
 - **Embrace** the dynamic nature of Python!
 
 ---
@@ -464,65 +517,307 @@ layout: section
 level: 2
 ---
 
-# Import System
+# The Import System
 
 ---
 
-# Import Mental Model
+# Modules
 
-- Imports load code into memory
-- Dependencies are automatically handled
-- Modules are cached in `sys.modules`
+- A _module_ in Python is a namespace containing objects (functions, classes, variables):
+  - from a single Python file (e.g. `my_module.py`)
+  - created by executing the source file **only once** when first imported
+  - cached for subsequent imports (in `sys.modules`)
+  ```python
+  ## -- my_module.py --
+  print("This gets executed on import")
 
-```python
-import delorean  # Also imports pytz, python-dateutil
+  MY_CONSTANT = 42
 
-# Different import styles
-import module                 # Use: module.name
-from module import name      # Use: name
-from module import name as alias  # Use: alias
-```
+  def hello():
+      return "Hello from my_module!"
+
+  ## -- main.py --
+  import my_module  # Prints "This gets executed on import"
+  import my_module  # No output - already imported!
+  ```
+---
+
+# Packages: Modules in Directories
+
+- A _package_ is a module which contains other modules:
+  - created from a directory containing Python modules
+  - the package namespace is initially created by executing the special `__init__.py` file in the directory
+  - can contain subpackages (nested directories)
+  ```
+  my_package/
+  │
+  ├── __init__.py
+  ├── module1.py
+  ├── module2.py
+  │
+  └── subpackage/
+      ├── __init__.py
+      └── module3.py
+  ```
 
 ---
 
-# Import Side Effects
+# Imports
+
+- _Imports_ are the Python mechanism to access symbols from other modules
+
+<div class="grid grid-cols-[50%_50%] gap-2">
+<div>
+
+- The `import` statement
+  - loads a module and binds it to a name in the current namespace
+  - executes the module code if not already imported
+- The `importlib` standard library module
+  - provides the implementation of the `import` statement (`importlib.__import__()`)
+  - provides low-level tools for handling imports
+</div>
 
 ```python
-# In module.py
-print("I run on import!")
-x = 42
+import math                   # Import the math module
+math.sqrt(16)                 # 4.0
 
-def main():
-    print("I only run if executed directly")
+from math import sqrt, pi     # Import specific symbols
+sqrt(16)                      # 4.0
 
-if __name__ == "__main__":
-    main()
+import numpy as np            # Import with an alias
+np.array([1, 2, 3])
 ```
-
-Avoid `from module import *`:
-- Pollutes namespace
-- Makes dependencies unclear
-- Can overwrite existing names
+</div>
 
 ---
 
-# EXERCISE: Import Problems
+# Import Algorithm: Simple Version for Modules
 
-1. Spot the problem:
 ```python
-# main.py
-from utils import helper
-# utils.py
-from main import app
+import my_module    # as alias
+```
+<v-click>
+
+1. Check if `my_module` is in `sys.modules`
+    - Dictionary mapping module names to module objects (module cache)
+    - Can be (**carefully**) modified at runtime: `del sys.modules['module_name']`
+</v-click>
+<v-click>
+
+2. If not, find the module code (`my_module.py`) in the `sys.path` items
+    - List of directories where Python looks for module.
+    - Usually: `basedir(__main__.py) : $PYTHONPATH : <standard-library> : <site-packages>`
+    - Can be (**carefully**) modified at runtime: `sys.path.append('/path/to/my/modules')`
+</v-click>
+<v-click>
+
+3. Create a new module object and load the module code (`exec(read('my_module.py'))`)
+</v-click>
+<v-click>
+
+4. Store the loaded module object in `sys.modules`
+</v-click>
+<v-click>
+
+5. Return the loaded module and **bind it to the name `my_module` in the current namespace** (or `alias`)
+</v-click>
+
+---
+
+# Import Algorithm for Packages
+
+<div class="grid grid-cols-[50%_50%] gap-5">
+<div>
+```python
+import my_package       # as alias
+```
+```
+my_package/
+│
+├── __init__.py
+├── module1.py
+├── module2.py
+│
+└── subpackage/
+    ├── __init__.py
+    └── module3.py
+```
+</div>
+
+<div>
+<v-click>
+
+1. Check if `my_package` is in `sys.modules`
+</v-click>
+<v-click>
+
+2. If not, find the package code (`my_package/__init__.py`) in the `sys.path` items
+</v-click>
+<v-click>
+
+3. Create a new package object and load the `my_package/__init__.py` code
+</v-click>
+<v-click>
+
+4. Store the loaded package object in `sys.modules`
+</v-click>
+<v-click>
+
+5. Return the loaded package and bind it to the name `my_package` (or `alias`) in the current namespace
+</v-click>
+</div>
+</div>
+
+---
+
+# Import Algorithm for Subpackages
+
+<div class="grid grid-cols-[45%_58%] gap-2">
+<div>
+```python
+import my_package.module1   # as alias
+```
+```
+my_package/
+│
+├── __init__.py
+├── module1.py
+├── module2.py
+│
+└── subpackage/
+    ├── __init__.py
+    └── module3.py
+```
+</div>
+
+<div>
+<v-click>
+
+1. Check if `my_package.module1` is in `sys.modules`
+</v-click>
+<v-click>
+
+2. If not, **import the `my_package` package** using the previous algorithm
+</v-click>
+<v-click>
+
+3. Find the module code (`my_package/module1.py`) in the `sys.path` items
+</v-click>
+<v-click>
+
+4. Create a new module object and load the `my_package/module1.py` code
+</v-click>
+<v-click>
+
+5. Store the loaded module object in `sys.modules` with the full name `my_package.module1`
+</v-click>
+<v-click>
+
+6. Return the loaded module and bind it to the name `module1` in the `sys.modules['my_package']` namespace
+    - If `as alias` is used, bind it to the name `alias` in the current namespace too
+
+</v-click>
+</div>
+</div>
+
+---
+
+# Selective `from A import B`
+
+- Allows importing only specific symbols from a module
+- Roughly equivalent to:
+<div class="grid grid-cols-[48%_50%] gap-2">
+<div>
+
+```python
+from my_package.subpackage.module3 import foo as f
+```
+</div>
+<div>
+
+```python
+_my_package_in_scope = "my_package" in globals()
+import my_package.subpackage.module3
+f = my_package.subpackage.module2.foo   # <==== !!!
+if not _my_package_in_scope:
+    del my_package
+del _my_package_in_scope
+```
+</div>
+</div>
+
+- It also supports relative imports
+```python
+# __package__ = "root.branch"
+from . import a             # from root.branch import a
+from .foo import bar        # from root.branch.foo import bar
+from ..baz import module    # from root.baz import module
 ```
 
-2. Monkey Patching Difference:
-```python
-# Version 1
-import math
-math.pi = 3  # Changes for all users of math
+  - assert that the current module is inside a **package**
+  - resolve `.` to the package in which the current module is located
+  - resolve `..` to the parent **package**
 
-# Version 2
-from math import pi
-pi = 3  # Only changes local name
+---
+
+# Circular Imports
+
+<div class="grid grid-cols-[50%_50%] gap-2">
+<div>
+
+- A _circular import_ occurs when two or more modules depend on each other
+- Dealing with _partially initialized_ modules
+  - `ImportError` or unexpected `AttributeError`
+
+Solutions:
+- Restructure your code 👍
+- Move imports inside functions
+- Import where needed, not at the top 👎
+  - only if necessary
+
+</div>
+<div>
+
+```python
+## -- a.py --
+import b
+
+CONSTANT_A = 42
+
+def function_a(x):
+    return b.function_b(x) + 1
+
+## -- b.py --
+import a
+
+CONSTANT_B = a.CONSTANT_A + 10  # Undefined 'a.CONSTANT_A'
+
+def function_b(x):
+    # CONSTANT_B = a.CONSTANT_A + 10  # Here is ok
+    return x + CONSTANT_B
+
+## -- main.py --
+import b
+print(b.function_b(1))
 ```
+</div>
+</div>
+
+
+
+---
+layout: fact
+---
+
+## Exercises
+
+Browse to: [https://github.com/eth-cscs/swe4py](https://github.com/eth-cscs/swe4py)
+
+<br />
+
+Open a code space and head to `exercises/1-2-understanding-python`
+(need to be logged in)
+
+or
+
+Clone the repo & `cd swe4py/exercises/1-2-understanding-python`
