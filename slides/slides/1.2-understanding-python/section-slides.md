@@ -197,7 +197,7 @@ outer()
 
 # Name Scopes for Modification: Playground
 
-```python {monaco-run}
+```python {monaco-run} {autorun: false}
 global_name = 'global'
 def outer():
     enclosed_name = 'enclosed'
@@ -771,10 +771,9 @@ from ..baz import module    # from root.baz import module
 
 Solutions:
 - Restructure your code 👍
+  - Extract common utilities to new module, dependency injection, factory pattern, ...
 - Move imports inside functions
 - Import where needed, not at the top 👎
-  - only if necessary
-
 </div>
 <div>
 
@@ -782,19 +781,21 @@ Solutions:
 ## -- a.py --
 import b
 
-CONSTANT_A = 42
+CONSTANT_A = b.CONSTANT_B + 10  # Here it fails
 
 def function_a(x):
-    return b.function_b(x) + 1
+    # CONSTANT_A = b.CONSTANT_B + 10  # Here is ok
+    return x + CONSTANT_A
+
+print("a.py load has finished")
 
 ## -- b.py --
 import a
 
-CONSTANT_B = a.CONSTANT_A + 10  # Undefined 'a.CONSTANT_A'
+CONSTANT_B = 42
 
 def function_b(x):
-    # CONSTANT_B = a.CONSTANT_A + 10  # Here is ok
-    return x + CONSTANT_B
+    return x + a.function_a(x)
 
 ## -- main.py --
 import b
@@ -802,8 +803,6 @@ print(b.function_b(1))
 ```
 </div>
 </div>
-
-
 
 ---
 layout: fact
