@@ -41,9 +41,9 @@ RustPython:
 
 # Anatomy of a Python Interpreter (CPython)
 
-- CPython actually compiles the source code into bytecode (and caches it) before executing it
+CPython actually compiles the source code into bytecode (and caches it) before executing it
 
-![cpython](./assets/python-interpreter.svg)
+![cpython](./assets/python-interpreter.drawio.svg)
 
 ---
 
@@ -73,7 +73,7 @@ RustPython:
 - Command mode (**-c**): `$ python [options] -c 'python_statement; python_statement'`
   - `sys.path.insert(0, $PWD)`
 - Note that the same file can be run in different modes depending on the command line
-  - `python ./my_local_source.py` vs `python -m my_local_source`
+  - `python ./my_pkg/source.py` vs `python -m my_pkg.my_local_source`
 
 ---
 
