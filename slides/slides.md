@@ -10,7 +10,7 @@ info: |
   Presentation slides for the internal CSCS course.
 
   Sources available at [GitHub (eth-cscs/swe4py)](https://github.com/eth-cscs/swe4py/)
-favicon: ./public/images/cscs.ico
+favicon: /images/cscs.ico
 # apply unocss classes to the current slide
 class: text-center
 # https://sli.dev/features/drawing
@@ -41,7 +41,7 @@ hide: false
 <!-- Content here is ignored -->
 
 ---
-src: ./slides/1.2-python-common-ground/section-slides.md
+src: ./slides/1.2-understanding-python/section-slides.md
 hide: false
 ---
 

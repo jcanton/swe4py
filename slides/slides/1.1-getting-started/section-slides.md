@@ -2,13 +2,13 @@
 layout: section
 ---
 
-# Getting started with Python: Basic environment configuration
+# Getting Started with Python: Basic environment configuration
 
 ---
 
-## Content
+## Agenda
 
-- Understanding a Python interpreter
+- Understanding Python interpreters
 - Understanding virtual environments
 
 ---
@@ -41,9 +41,9 @@ RustPython:
 
 # Anatomy of a Python Interpreter (CPython)
 
-- CPython actually compiles the source code into bytecode (and caches it) before executing it
+CPython actually compiles the source code into bytecode (and caches it) before executing it
 
-![cpython](./assets/python-interpreter.svg)
+![cpython](./assets/python-interpreter.drawio.svg)
 
 ---
 
@@ -73,7 +73,7 @@ RustPython:
 - Command mode (**-c**): `$ python [options] -c 'python_statement; python_statement'`
   - `sys.path.insert(0, $PWD)`
 - Note that the same file can be run in different modes depending on the command line
-  - `python ./my_local_source.py` vs `python -m my_local_source`
+  - `python ./my_pkg/source.py` vs `python -m my_pkg.my_local_source`
 
 ---
 
@@ -117,7 +117,8 @@ RustPython:
   - Very well integrated with Python tools
   - Convenient for development and testing with different Python versions
   - Fully cross-platform where Python is available
-  - (Opinionated) Except for production, _"sometimes"_ a container _might_ be overkill
+
+- Venvs are just an idiomatic way to set up the Python run-time
 
 <!--
 
@@ -134,12 +135,8 @@ layout: fact
 
 ## Exercises
 
-Time to see it in action: Browse to
+Browse to: [https://github.com/eth-cscs/swe4py](https://github.com/eth-cscs/swe4py)
 
-<br />
-<a href="https://github.com/eth-cscs/swe4py">https://github.com/eth-cscs/swe4py</a>
-
-<br />
 <br />
 
 Open a code space and head to `exercises/1-1-getting-started`

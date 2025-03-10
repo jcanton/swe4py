@@ -1,0 +1,2 @@
+# clue.py
+evidence = "fingerprint"
