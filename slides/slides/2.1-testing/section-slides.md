@@ -179,12 +179,26 @@ Touching a code nerve
 
 ```mermaid
 sequenceDiagram
-    Testing Framework Code->> Testing Code: Test Setup
-    Testing Code->>App/Lib Code: Triggering a nerve
+    Testing Framework Code->> Test Code: Test Setup
+    Test Code->>App/Lib Code: Triggering a nerve
 
-    App/Lib Code->>Testing Code: gathered results
-    Testing Code->> Testing Framework Code: report
+    App/Lib Code->>Test Code: gathered results
+    Test Code->> Testing Framework Code: report
 ```
+
+---
+layout: center
+---
+
+# Anatomy of a Test
+
+The 3A (if you like acronyms)
+
+- Arrange
+- Act
+- Assert
+
+FWIW AAA in TDD aka GWT from BDD
 
 ---
 layout: section
@@ -222,7 +236,7 @@ The process driving the testing framework could be ...
 
 - `pytest`
 
-        - Works like a charm, specially from PyCharm
+        - Discovers and executes tests
 
 </v-click>
 <v-click>
@@ -388,8 +402,6 @@ The 3A (if you like acronyms)
 - Arrange
 - Act
 - Assert
-
-FWIW aka GWT from BDD
 
 ---
 
@@ -685,17 +697,13 @@ def test_from_pyfile_weird_encoding(tmp_path, encoding):
 
 # pytest Exercise
 
-Assertions and Fixtures
+Assertions
 
 *Search help at https://docs.pytest.org*
 
 1. Write a test with asserts for `is_even` function of `core.py`
 1. Implement the tests for `multiply`, fix bugs as needed but see the test fail!
 1. Implement tests for `divide` using `pytest.raises`. Test for error message too.
-TODO
-1. Add a fixture to your test to factor out your test data
-1. Move your fixture to `conftest.py` so it can be reused later
-1. Add a docstring to your fixture and see the docs with `pytest --fixtures`
 
 ---
 
@@ -823,6 +831,10 @@ Parametrization and Mocking
 
 1. using pytest `monkeypatch` create a test in `test_app.py` that creates a Driver object and tests its `username` value is taken from the `USERNAME` environment variable.
 
+1. define a fixture that monkeypatches USERNAME and PASSWORD env variables to predefined values and use it in your last test. Pro-tip: move it to conftest.py for autoimport and higher visibility. Pro-tip2: add a docstring to your fixture and see the docs running `pytest --fixtures`.
+
+1. write a test that patches `DB.connect` to tests that it's called only once and with the PASSWORD read from the environment when `driver.connect` is called. leverage `with patch.object... as` from unnitest.mock.
+
 ---
 layout: section
 ---
@@ -835,9 +847,9 @@ layout: section
 
 <v-click>
 
-1. tests < CODE ?
+1. caring for tests < CODE ?
 
-        (tests hold so much value!)
+        (tests hold at least same value!)
 
 </v-click>
 <v-click>
