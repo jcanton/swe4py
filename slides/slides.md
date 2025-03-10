@@ -74,14 +74,3 @@ hide: false
 ---
 
 <!-- Content here is ignored -->
-
----
-
-<!-- This allow you to embed external code blocks -->
-<<< @/snippets/python.py#snippet
-
----
-layout: end
----
-
-The End
