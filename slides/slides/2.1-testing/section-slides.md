@@ -821,7 +821,7 @@ Parametrization and Mocking
 
 1. use `pytest.mark.parametrize` in `test_count_vowels` to change one test with multiple asserts into multiple tests with one assert each. Work till you see those vowel tests pass.
 
-1. Write a test in `test_app.py` that mocks `os.getenv` and makes the function using `os.getenv` fail
+1. using pytest `monkeypatch` create a test in `test_app.py` that creates a Driver object and tests its `username` value is taken from the `USERNAME` environment variable.
 
 ---
 layout: section
