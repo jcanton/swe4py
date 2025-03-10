@@ -242,23 +242,6 @@ What happens when modifying names from different scopes?
 </v-click>
 
 ---
-layout: fact
----
-
-## Exercises
-
-Browse to: [https://github.com/eth-cscs/swe4py](https://github.com/eth-cscs/swe4py)
-
-<br />
-
-Open a code space and head to `exercises/1-2-understanding-python`
-(need to be logged in)
-
-or
-
-Clone the repo & `cd swe4py/exercises/1-2-understanding-python`
-
----
 layout: section
 level: 2
 ---
@@ -505,12 +488,12 @@ Browse to: [https://github.com/eth-cscs/swe4py](https://github.com/eth-cscs/swe4
 
 <br />
 
-Open a code space and head to `exercises/1-2-understanding-python`
+Open a code space and head to `exercises/1-2-understanding-python/a.core-concepts`
 (need to be logged in)
 
 or
 
-Clone the repo & `cd swe4py/exercises/1-2-understanding-python`
+Clone the repo & `cd swe4py/exercises/1-2-understanding-python/a.core-concepts`
 
 ---
 layout: section
@@ -814,9 +797,9 @@ Browse to: [https://github.com/eth-cscs/swe4py](https://github.com/eth-cscs/swe4
 
 <br />
 
-Open a code space and head to `exercises/1-2-understanding-python`
+Open a code space and head to `exercises/1-2-understanding-python/b.import-system`
 (need to be logged in)
 
 or
 
-Clone the repo & `cd swe4py/exercises/1-2-understanding-python`
+Clone the repo & `cd swe4py/exercises/1-2-understanding-python/b.import-system`

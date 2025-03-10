@@ -117,7 +117,8 @@ CPython actually compiles the source code into bytecode (and caches it) before e
   - Very well integrated with Python tools
   - Convenient for development and testing with different Python versions
   - Fully cross-platform where Python is available
-  - (Opinionated) Except for production, _"sometimes"_ a container _might_ be overkill
+
+- Venvs are just an idiomatic way to set up the Python run-time
 
 <!--
 
