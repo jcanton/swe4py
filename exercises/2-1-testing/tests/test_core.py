@@ -1,18 +1,20 @@
+from operator import sub as substract
+
 def test_add():
     assert 1 + 2 == 3
     assert 2 + 3 == 5
 
 def test_subtract():
-    import operator
-    operator.sub(2, 1) == 1
-    operator.sub(3, 2) == 1
+    substract(2, 1) == 1
+    substract(3, 2) == 1
 
 def test_multiply():
     # multiplication is just addition in disguise, test is redundant
     pass
 
 def test_divide():
-    raise NotImplementedError
+    from src.project.core import divide
+    assert divide(2, 1) == 2
 
 def test_is_palindrome():
     from src.project.core import is_palindrome

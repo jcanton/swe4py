@@ -468,7 +468,7 @@ Can you see the 3As?
 
 Getting Started
 
-<Transform :scale="0.8">
+<Transform :scale="0.75">
 
 ```
 # 1. navigate to exercise
@@ -481,9 +481,6 @@ source venv/bin/activate
 
 # 3. install dependencies
 pip install pytest
-pip install pytest-benchmark
-pip install pytest-cov
-pip install pytest-xdist
 
 # 4. run all tests
 python -m pytest .
@@ -491,11 +488,17 @@ python -m pytest .
 # 5. run module tests
 python -m pytest test_core.py
 
-# 6. run targeted tests
+# 6. run named tests
 python -m pytest -k pal
 
-# 7. explore pytest options
+# 7. run marked tests
+
+"first add a pytest mark named smoking to test_smoke from test_app.py."
+python -m pytest -m smoking
+
+# 8. explore pytest options
 see https://docs.pytest.org/en/stable/how-to/output.html
+
 ```
 
 </Transform>
@@ -684,10 +687,15 @@ def test_from_pyfile_weird_encoding(tmp_path, encoding):
 
 Assertions and Fixtures
 
-1. Write a test that asserts an uncovered path of `core.py`
+*Search help at https://docs.pytest.org*
+
+1. Write a test with asserts for `is_even` function of `core.py`
+1. Implement the tests for `multiply`, fix bugs as needed but see the test fail!
+1. Implement tests for `divide` using `pytest.raises`. Test for error message too.
+TODO
 1. Add a fixture to your test to factor out your test data
-1. Rewrite your fixture with a dataclass and move it to `conftest.py`
-1. Add a docstring to your fixture and see the docs with pytest --fixtures
+1. Move your fixture to `conftest.py` so it can be reused later
+1. Add a docstring to your fixture and see the docs with `pytest --fixtures`
 
 ---
 
@@ -811,9 +819,8 @@ More examples in https://docs.pytest.org/en/stable/how-to/monkeypatch.html
 
 Parametrization and Mocking
 
-1. use `pytest.mark.parametrize` in a `core.py` test to test more combinations of input
-1. Mark this test with a custom `mark` named `futurefuzz`
-1. Run the test with `pytest --strict-markers`
+1. use `pytest.mark.parametrize` in `test_count_vowels` to change one test with multiple asserts into multiple tests with one assert each. Run and see the output.
+
 1. Write a test in `test_app.py` that mocks `os.getenv` and makes the function using `os.getenv` fail
 
 ---
