@@ -120,14 +120,22 @@ CPython actually compiles the source code into bytecode (and caches it) before e
 
 - Venvs are just an idiomatic way to set up the Python run-time
 
-<!--
+---
 
 # Other Virtual Environment Tools: Conda, Spack,
 
-- conda ...
-
-
--->
+- There are other general tools to manage dependencies and create isolated environments: conda, spack, ...
+- They all work fine with Python, why don't use it?
+  - You **can** use them, they have different trade-offs
+- Conda (and similar `miniconda`, `micromamba`, `mamba`, `pixi`, ...)
+  - Manages cross-language packages (Python, R, C/C++, ...) and can install Python runtimes
+  - Good (but not perfect) integration with `pip`
+  - Popular in data science and scientific computing for handling complex, multi-language toolchains
+  - Resolves inter-package dependencies (including non-Python ones) and provides pre-built binaries
+- Spack
+  - Focused on system/HPC software
+  - Compiles packages from source with customizable build configurations
+  - Supports multiple compiler versions, flags, and dependency variants for performance tuning
 
 ---
 layout: fact

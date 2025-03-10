@@ -743,6 +743,22 @@ from ..baz import module    # from root.baz import module
 
 ---
 
+# Indiscriminate `from A import *` Imports
+
+- Import all **public** symbols from a module in the current namespace
+  - By default, all symbols ejcept `_underscored` ones
+  - It can be customized defining the list of public names in `__all__`
+  ```python
+  __all__ = ["symbol1", "Symbol2"]
+  ```
+- Do NOT use them in actual code!
+  - Pollutes namespace
+  - Makes dependencies unclear
+  - Can cause unexpected name conflicts
+  - Hampers static analysis
+
+---
+
 # Circular Imports
 
 <div class="grid grid-cols-[50%_50%] gap-2">
