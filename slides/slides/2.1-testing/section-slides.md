@@ -352,9 +352,10 @@ def factorial(n):
 
 Exercise
 
-1. Open `exercises/testing/doctest.py`
-2. Add some doctest tests to it
-3. Run those tests and see the results in stdout
+1. `git clone https://github.com/eth-cscs/swe4py.git`
+1. `cd swe4py/exercises/2-1-testing/doctests`
+1. Add some doctest tests to `doctest.py`
+1. Run those doctest tests and see the results in stdout
 
 </v-click>
 
@@ -470,7 +471,8 @@ Getting Started
 
 ```
 # 1. navigate to exercise
-cd exercises/testing
+git clone https://github.com/eth-cscs/swe4py.git
+cd swe4py/exercises/2-1-testing
 
 # 2. create python environment
 python -m venv venv
@@ -497,7 +499,6 @@ python -m pytest -k palindrome
 <!--
 - Run test suite with coverage
 - Run test suite in randomized order
-
 -->
 
 ---
@@ -669,7 +670,6 @@ def test_from_pyfile_weird_encoding(tmp_path, encoding):
 # pytest Exercise
 
 Assertions and Fixtures
-
 
 1. Write a test that asserts an uncovered path of `core.py`
 1. Add a fixture to your test to factor out your test data
