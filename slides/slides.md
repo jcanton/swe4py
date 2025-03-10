@@ -26,6 +26,7 @@ python:
 fonts:
   sans: Arial
   seriph: Arial
+lineNumbers: true
 ---
 
 # Software Engineering Practices with Python
