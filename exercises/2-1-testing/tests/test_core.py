@@ -1,3 +1,5 @@
+import pytest
+from src.project.core import count_vowels
 from operator import sub as substract
 
 def test_add():

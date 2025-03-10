@@ -819,7 +819,7 @@ More examples in https://docs.pytest.org/en/stable/how-to/monkeypatch.html
 
 Parametrization and Mocking
 
-1. use `pytest.mark.parametrize` in `test_count_vowels` to change one test with multiple asserts into multiple tests with one assert each. Run and see the output.
+1. use `pytest.mark.parametrize` in `test_count_vowels` to change one test with multiple asserts into multiple tests with one assert each. Work till you see those vowel tests pass.
 
 1. Write a test in `test_app.py` that mocks `os.getenv` and makes the function using `os.getenv` fail
 
