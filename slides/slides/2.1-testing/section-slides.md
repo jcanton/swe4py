@@ -3,7 +3,12 @@ layout: fact
 title: Testing
 ---
 
-# Testing
+# Testing 🪙
+
+<!--
+- Testing and coding are two sides of the same coin
+- All projects have testing, some do it with written code
+-->
 
 ---
 layout: full
@@ -24,7 +29,7 @@ layout: full
 
 ## **Concepts**
 
-        4. Testing Workflow
+        4. Testing Work-flow
         5. Testing Frameworks
         6. Testing Features
 
@@ -52,28 +57,28 @@ Different Targets
 
 <v-click>
 
-1. **Code**
+1. 📃 **Code**
 
         (e.g. it doesn't break)
 
 </v-click>
 <v-click>
 
-2. **Requirements**
+2. 💼 **Requirements**
 
         (e.g. business is happy)
 
 </v-click>
 <v-click>
 
-3. **Environments**
+3. 🖥 **Environments**
 
         (e.g. deployment to prod works!)
 
 </v-click>
 <v-click>
 
-4. **Data**
+4. 📚 **Data**
 
         (e.g. dataset is statistically reasonable)
 
@@ -96,21 +101,21 @@ Different Targets
 
 <v-click>
 
-1. To catch **bugs**
+1. 🐞 To catch **bugs**
 
         (proves existence, not lack thereof!)
 
 </v-click>
 <v-click>
 
-2. To increase developer **confidence**
+2. 🧑‍💻 To increase developer **confidence**
 
         (promotes refactoring, hence clean code)
 
 </v-click>
 <v-click>
 
-3. To **share understanding** among engineering team
+3. 💡 To **share understanding** among engineering team
 
         (becomes a form of living documentation)
 
@@ -150,15 +155,7 @@ Automatically
 
 If testing is informal ...
 
-</v-click>
-<v-click>
-
-Manual testing is rude.
-
-</v-click>
-<v-click>
-
-No testing is savage.
+Manual testing is savage *
 
 </v-click>
 
@@ -175,6 +172,21 @@ Pragmatically
 </Transform>
 
 ---
+
+# Testing HOW?
+
+Touching a code nerve
+
+```mermaid
+sequenceDiagram
+    Testing Framework Code->> Testing Code: Test Setup
+    Testing Code->>App/Lib Code: Triggering a nerve
+
+    App/Lib Code->>Testing Code: gathered results
+    Testing Code->> Testing Framework Code: report
+```
+
+---
 layout: section
 ---
 
@@ -182,7 +194,7 @@ layout: section
 
 ---
 
-# Testing **Workflow**
+# Testing **Work-flow**
 
 - The **Test Driver**
 
@@ -193,7 +205,7 @@ layout: section
 
 # Test Driver
 
-(Testing Workflow)
+(Testing Work-flow)
 
 The process driving the testing framework could be ...
 
@@ -241,7 +253,7 @@ The process driving the testing framework could be ...
 
 # Feedback Loop
 
-(Testing Workflow)
+(Testing Work-flow)
 
 For each new test for a new feature (or bugfix)...
 
@@ -353,7 +365,7 @@ def factorial(n):
 Exercise
 
 1. `git clone https://github.com/eth-cscs/swe4py.git`
-1. `cd swe4py/exercises/2-1-testing/doctests`
+1. `cd swe4py/exercises/2-1-testing/01-doctests`
 1. Add some doctest tests to `doctest.py`
 1. Run those doctest tests and see the results in stdout
 
@@ -414,18 +426,9 @@ Can you see the 3As?
 </Transform>
 
 <!--
-./python -m test test_float -v | grep test_setformat
+./python -m test --list-tests | grep float
+./python -m test test_float -v
 -->
-
----
-
-# How Testing Arrange feels like
-
-<Transform :scale="0.8">
-
-![truman](https://images.thalia.media/-/BF750-750/818040d0fb03498aa478e0331567274e/die-truman-show-blu-ray-blu-ray-4k-jim-carrey.jpeg)
-
-</Transform>
 
 ---
 
@@ -463,11 +466,9 @@ Can you see the 3As?
 
 # pytest Exercise
 
-(Testing Frameworks)
+Getting Started
 
 <Transform :scale="0.8">
-
-Getting Started
 
 ```
 # 1. navigate to exercise
@@ -491,14 +492,17 @@ python -m pytest .
 python -m pytest test_core.py
 
 # 6. run targeted tests
-python -m pytest -k palindrome
+python -m pytest -k pal
+
+# 7. explore pytest options
+see https://docs.pytest.org/en/stable/how-to/output.html
 ```
 
 </Transform>
 
 <!--
-- Run test suite with coverage
-- Run test suite in randomized order
+- Run test suite with coverage?
+- Run test suite in randomized order?
 -->
 
 ---
@@ -546,17 +550,17 @@ python -m pytest -k palindrome
 layout: fact
 ---
 
-`assert` (in code)
-
-&ne;
-
-`assert` (in test)
+`assert` (in code) &ne; `assert` (in test)
 
 ---
 layout: fact
 ---
 
 `assert` (in code) is **NOT** for error handling
+
+---
+layout: fact
+---
 
 uncaught `Error` (in test) is **NOT** a form of testing
 
@@ -644,16 +648,25 @@ class TestFileTypeRB(TempDirMixin, ParserTestCase):
 
 ---
 
+# How Testing Arrange feels like
+
+<Transform :scale="0.8">
+
+![truman](https://images.thalia.media/-/BF750-750/818040d0fb03498aa478e0331567274e/die-truman-show-blu-ray-blu-ray-4k-jim-carrey.jpeg)
+
+</Transform>
+
+---
+
 # Fixture
 
 Fixture with pytest
 
-<Transform :scale="0.8">
+<Transform :scale="0.99">
 
-*Example from Flask @ https://github.com/pallets/flask/blob/3.1.0/tests/test_config.py#L243*
+*Example from Flask @ https://github.com/pallets/flask/blob/3.1.0/tests/test_config.py#L244*
 
 ```
-@pytest.mark.parametrize("encoding", ["utf-8", "iso-8859-15", "latin-1"])
 def test_from_pyfile_weird_encoding(tmp_path, encoding):
     f = tmp_path / "my_config.py"
     f.write_text(f'# -*- coding: {encoding} -*-\nTEST_VALUE = "föö"\n', encoding)
@@ -673,6 +686,7 @@ Assertions and Fixtures
 
 1. Write a test that asserts an uncovered path of `core.py`
 1. Add a fixture to your test to factor out your test data
+1. Rewrite your fixture with a dataclass and move it to `conftest.py`
 1. Add a docstring to your fixture and see the docs with pytest --fixtures
 
 ---
