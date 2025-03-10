@@ -1,6 +1,4 @@
-def even_if_possitive(n: int) -> int:
-    """
-    """
+def even_if_positive(n: int) -> int:
     if n > 0:
         return 2
 
