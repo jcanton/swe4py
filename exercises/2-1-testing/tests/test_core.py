@@ -34,7 +34,30 @@ def test_list_sum():
     assert list_sum([-1, -2, -3]) == -6
     assert list_sum([0, 0, 0]) == 0
 
-def test_count_vowels():
-    assert count_vowels("hello") == 2
-    assert count_vowels("world") == 1
-    assert count_vowels("aeiou") == 5
+@pytest.mark.parametrize("input_str, expected_count", [
+    ("hello", 2),
+    ("world", 1),
+    ("aeiou", 5),
+])
+def test_count_vowels(input_str, expected_count):
+    assert count_vowels(input_str) == expected_count
+
+def test_is_even():
+    from project.core import is_even
+    assert not is_even(2)
+    assert is_even(3)
+    assert not is_even(0)
+    assert is_even(-1)
+    assert not is_even(-2)
+
+def test_multiply():
+    from project.core import multiply
+    assert multiply(2, 3) == 6
+    assert multiply(3, 2) == 6
+    assert multiply(1, 0) == 0
+    assert multiply(0, 1) == 0
+    assert multiply(-1, 2) == -2
+    assert multiply(2, -1) == -2
+    assert multiply(-2, -1) == 2
+
+

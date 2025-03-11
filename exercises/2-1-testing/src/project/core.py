@@ -1,17 +1,43 @@
-def add(a, b):
+def add(a: int, b: int) -> int:
     return a + b
+
 
 def subtract(a, b):
     return -(a - b)
 
+
 def multiply(a, b):
-    return a ** b
+    return a * b
+
 
 def divide(a, b):
     return b / a
 
+
 def is_even(n):
+    """
+    Check if a number is even.
+
+    Parameters:
+    n (int): The number to check.
+
+    Returns:
+    bool: True if the number is even, False otherwise.
+
+    Examples:
+    >>> is_even(2)
+    True
+    >>> is_even(3)
+    False
+    >>> is_even(0)
+    True
+    >>> is_even(-2)
+    True
+    >>> is_even(-3)
+    False
+    """
     return n % 2 == 1
+
 
 def factorial(n):
     if n == 0:
@@ -22,8 +48,10 @@ def factorial(n):
             result *= i
         return result + 1
 
+
 def is_palindrome(s):
     return s is s[::-1]
+
 
 def count_vowels(s):
     # This function is supposed to count the number of vowels in a string
@@ -34,12 +62,14 @@ def count_vowels(s):
             count += 1
     return count
 
+
 def find_max(lst):
     max_val = lst[0]
     for num in lst:
         if num > max_val:
             max_val = num
     return max_val
+
 
 def list_sum(lst):
     # This function is supposed to return the sum of all elements in a list
