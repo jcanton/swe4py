@@ -3,7 +3,12 @@ layout: fact
 title: Testing
 ---
 
-# Testing
+# Testing 🪙
+
+<!--
+- Testing and coding are two sides of the same coin
+- All projects have testing, some do it with written code
+-->
 
 ---
 layout: full
@@ -24,7 +29,7 @@ layout: full
 
 ## **Concepts**
 
-        4. Testing Workflow
+        4. Testing Work-flow
         5. Testing Frameworks
         6. Testing Features
 
@@ -52,28 +57,28 @@ Different Targets
 
 <v-click>
 
-1. **Code**
+1. 📃 **Code**
 
         (e.g. it doesn't break)
 
 </v-click>
 <v-click>
 
-2. **Requirements**
+2. 💼 **Requirements**
 
         (e.g. business is happy)
 
 </v-click>
 <v-click>
 
-3. **Environments**
+3. 🖥 **Environments**
 
         (e.g. deployment to prod works!)
 
 </v-click>
 <v-click>
 
-4. **Data**
+4. 📚 **Data**
 
         (e.g. dataset is statistically reasonable)
 
@@ -96,21 +101,21 @@ Different Targets
 
 <v-click>
 
-1. To catch **bugs**
+1. 🐞 To catch **bugs**
 
         (proves existence, not lack thereof!)
 
 </v-click>
 <v-click>
 
-2. To increase developer **confidence**
+2. 🧑‍💻 To increase developer **confidence**
 
         (promotes refactoring, hence clean code)
 
 </v-click>
 <v-click>
 
-3. To **share understanding** among engineering team
+3. 💡 To **share understanding** among engineering team
 
         (becomes a form of living documentation)
 
@@ -150,15 +155,7 @@ Automatically
 
 If testing is informal ...
 
-</v-click>
-<v-click>
-
-Manual testing is rude.
-
-</v-click>
-<v-click>
-
-No testing is savage.
+Manual testing is savage *
 
 </v-click>
 
@@ -175,6 +172,35 @@ Pragmatically
 </Transform>
 
 ---
+
+# Testing HOW?
+
+Touching a code nerve
+
+```mermaid
+sequenceDiagram
+    Testing Framework Code->> Test Code: Test Setup
+    Test Code->>App/Lib Code: Triggering a nerve
+
+    App/Lib Code->>Test Code: gathered results
+    Test Code->> Testing Framework Code: report
+```
+
+---
+layout: center
+---
+
+# Anatomy of a Test
+
+The 3A (if you like acronyms)
+
+- Arrange
+- Act
+- Assert
+
+FWIW AAA in TDD aka GWT from BDD
+
+---
 layout: section
 ---
 
@@ -182,7 +208,7 @@ layout: section
 
 ---
 
-# Testing **Workflow**
+# Testing **Work-flow**
 
 - The **Test Driver**
 
@@ -193,7 +219,7 @@ layout: section
 
 # Test Driver
 
-(Testing Workflow)
+(Testing Work-flow)
 
 The process driving the testing framework could be ...
 
@@ -210,7 +236,7 @@ The process driving the testing framework could be ...
 
 - `pytest`
 
-        - Works like a charm, specially from PyCharm
+        - Discovers and executes tests
 
 </v-click>
 <v-click>
@@ -241,7 +267,7 @@ The process driving the testing framework could be ...
 
 # Feedback Loop
 
-(Testing Workflow)
+(Testing Work-flow)
 
 For each new test for a new feature (or bugfix)...
 
@@ -352,9 +378,10 @@ def factorial(n):
 
 Exercise
 
-1. Open `exercises/testing/doctest.py`
-2. Add some doctest tests to it
-3. Run those tests and see the results in stdout
+1. `git clone https://github.com/eth-cscs/swe4py.git`
+1. `cd swe4py/exercises/2-1-testing/01-doctests`
+1. Add some doctest tests to `doctest.py`
+1. Run those doctest tests and see the results in stdout
 
 </v-click>
 
@@ -375,8 +402,6 @@ The 3A (if you like acronyms)
 - Arrange
 - Act
 - Assert
-
-FWIW aka GWT from BDD
 
 ---
 
@@ -413,18 +438,9 @@ Can you see the 3As?
 </Transform>
 
 <!--
-./python -m test test_float -v | grep test_setformat
+./python -m test --list-tests | grep float
+./python -m test test_float -v
 -->
-
----
-
-# How Testing Arrange feels like
-
-<Transform :scale="0.8">
-
-![truman](https://images.thalia.media/-/BF750-750/818040d0fb03498aa478e0331567274e/die-truman-show-blu-ray-blu-ray-4k-jim-carrey.jpeg)
-
-</Transform>
 
 ---
 
@@ -462,15 +478,14 @@ Can you see the 3As?
 
 # pytest Exercise
 
-(Testing Frameworks)
-
-<Transform :scale="0.8">
-
 Getting Started
+
+<Transform :scale="0.75">
 
 ```
 # 1. navigate to exercise
-cd exercises/testing
+git clone https://github.com/eth-cscs/swe4py.git
+cd swe4py/exercises/2-1-testing
 
 # 2. create python environment
 python -m venv venv
@@ -478,9 +493,6 @@ source venv/bin/activate
 
 # 3. install dependencies
 pip install pytest
-pip install pytest-benchmark
-pip install pytest-cov
-pip install pytest-xdist
 
 # 4. run all tests
 python -m pytest .
@@ -488,16 +500,24 @@ python -m pytest .
 # 5. run module tests
 python -m pytest test_core.py
 
-# 6. run targeted tests
-python -m pytest -k palindrome
+# 6. run named tests
+python -m pytest -k pal
+
+# 7. run marked tests
+
+"first add a pytest mark named smoking to test_smoke from test_app.py."
+python -m pytest -m smoking
+
+# 8. explore pytest options
+see https://docs.pytest.org/en/stable/how-to/output.html
+
 ```
 
 </Transform>
 
 <!--
-- Run test suite with coverage
-- Run test suite in randomized order
-
+- Run test suite with coverage?
+- Run test suite in randomized order?
 -->
 
 ---
@@ -545,17 +565,17 @@ python -m pytest -k palindrome
 layout: fact
 ---
 
-`assert` (in code)
-
-&ne;
-
-`assert` (in test)
+`assert` (in code) &ne; `assert` (in test)
 
 ---
 layout: fact
 ---
 
 `assert` (in code) is **NOT** for error handling
+
+---
+layout: fact
+---
 
 uncaught `Error` (in test) is **NOT** a form of testing
 
@@ -643,16 +663,25 @@ class TestFileTypeRB(TempDirMixin, ParserTestCase):
 
 ---
 
+# How Testing Arrange feels like
+
+<Transform :scale="0.8">
+
+![truman](https://images.thalia.media/-/BF750-750/818040d0fb03498aa478e0331567274e/die-truman-show-blu-ray-blu-ray-4k-jim-carrey.jpeg)
+
+</Transform>
+
+---
+
 # Fixture
 
 Fixture with pytest
 
-<Transform :scale="0.8">
+<Transform :scale="0.99">
 
-*Example from Flask @ https://github.com/pallets/flask/blob/3.1.0/tests/test_config.py#L243*
+*Example from Flask @ https://github.com/pallets/flask/blob/3.1.0/tests/test_config.py#L244*
 
 ```
-@pytest.mark.parametrize("encoding", ["utf-8", "iso-8859-15", "latin-1"])
 def test_from_pyfile_weird_encoding(tmp_path, encoding):
     f = tmp_path / "my_config.py"
     f.write_text(f'# -*- coding: {encoding} -*-\nTEST_VALUE = "föö"\n', encoding)
@@ -668,12 +697,13 @@ def test_from_pyfile_weird_encoding(tmp_path, encoding):
 
 # pytest Exercise
 
-Assertions and Fixtures
+Assertions
 
+*Search help at https://docs.pytest.org*
 
-1. Write a test that asserts an uncovered path of `core.py`
-1. Add a fixture to your test to factor out your test data
-1. Add a docstring to your fixture and see the docs with pytest --fixtures
+1. Write a test with asserts for `is_even` function of `core.py`
+1. Implement the tests for `multiply`, fix bugs as needed but see the test fail!
+1. Implement tests for `divide` using `pytest.raises`. Test for error message too.
 
 ---
 
@@ -797,10 +827,13 @@ More examples in https://docs.pytest.org/en/stable/how-to/monkeypatch.html
 
 Parametrization and Mocking
 
-1. use `pytest.mark.parametrize` in a `core.py` test to test more combinations of input
-1. Mark this test with a custom `mark` named `futurefuzz`
-1. Run the test with `pytest --strict-markers`
-1. Write a test in `test_app.py` that mocks `os.getenv` and makes the function using `os.getenv` fail
+1. use `pytest.mark.parametrize` in `test_count_vowels` to change one test with multiple asserts into multiple tests with one assert each. Work till you see those vowel tests pass.
+
+1. using pytest `monkeypatch` create a test in `test_app.py` that creates a Driver object and tests its `username` value is taken from the `USERNAME` environment variable.
+
+1. define a fixture that monkeypatches USERNAME and PASSWORD env variables to predefined values and use it in your last test. Pro-tip: move it to conftest.py for autoimport and higher visibility. Pro-tip2: add a docstring to your fixture and see the docs running `pytest --fixtures`.
+
+1. write a test that patches `DB.connect` to tests that it's called only once and with the PASSWORD read from the environment when `driver.connect` is called. leverage `with patch.object... as` from unnitest.mock.
 
 ---
 layout: section
@@ -814,9 +847,9 @@ layout: section
 
 <v-click>
 
-1. tests < CODE ?
+1. caring for tests < CODE ?
 
-        (tests hold so much value!)
+        (tests hold at least same value!)
 
 </v-click>
 <v-click>
