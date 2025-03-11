@@ -18,6 +18,18 @@ print(f"{global_var=}")
 ```
 Given what you know about scopes read and write scopes, can you think of a simple way to modify the snippet so `global_var` could be modified inside the function without using the `global` keyword?
 
+```python
+global_var = "start_value"
+
+def f():
+    global_dict = globals()
+    global_dict['global_var'] = "new_value"
+
+print(f"{global_var=}")
+f()
+print(f"{global_var=}")
+```
+
 
 ## Customizing class behavior
 
