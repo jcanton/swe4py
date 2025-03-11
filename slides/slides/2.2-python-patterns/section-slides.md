@@ -246,3 +246,74 @@ def render(document: Document, renderer: Renderer):
 	if not isinstance(document, Document):  # optional depending on whether you expect your users to do static type checking in CI or not.
 		raise TypeError("'document' needs to implement the 'Document' protocoll documented here: ...")
 ```
+
+---
+
+# Docstrings
+
+- Docstrings are used to document code and to create automatic documentation (e.g. with [ReST](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html) and [Sphinx](https://www.sphinx-doc.org/en/master/index.html))
+- But explicit `ReStructuredText` markup creates visually dense, hard to read docstrings
+
+````md magic-move
+```python
+def function(path, field_storage, temporary=False):
+    """Summary line.
+
+    Extended description of function.
+
+    :param path: The path of the file to wrap
+    :type path: str
+    :param field_storage: The :class:`FileStorage` instance to wrap
+    :type field_storage: FileStorage
+    :param temporary: Whether or not to delete the file when the File
+        instance is destructed
+    :type temporary: bool
+    :returns: A buffered writable file descriptor
+    :rtype: BufferedFileStorage
+    """
+    pass
+
+```
+```python
+def function(path, field_storage, temporary=False):
+    """Summary line.
+
+    Extended description of function.
+
+    Args:
+        path (str): The path of the file to wrap
+        field_storage (FileStorage): The :class:`FileStorage` instance to wrap
+        temporary(bool): Whether or not to delete the file when the File
+          instance is destructed
+
+    Returns:
+        BufferedFileStorage: A buffered writable file descriptor
+    """
+    pass
+```
+```python
+def function(path: str, field_storage: FileStorage, temporary: bool =False) -> BufferedFileStorage:
+    """Summary line.
+
+    Extended description of function.
+
+    Args:
+        path: The path of the file to wrap
+        field_storage: The :class:`FileStorage` instance to wrap
+        temporary: Whether or not to delete the file when the File
+          instance is destructed
+
+    Returns:
+        A buffered writable file descriptor
+    """
+```
+````
+
+<v-click at="1">
+
+- _Google Style Docstrings_ (or _NumPy Style Docstrings_) are more readable and simpler to read
+</v-click>
+<v-click at="2">
+
+  - Even better: use type hints and let tools (e.g. [Napoleon-sphinx](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html)) to generate the documentation for you
+</v-click>
